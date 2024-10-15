@@ -9,7 +9,6 @@ fn main() -> io::Result<()> {
 
     let mut node = Node { id: None, message_id: 1 };
 
-    // let lines = io::stdin().lines();
     for message in de_iter {
         let message = message?;
 

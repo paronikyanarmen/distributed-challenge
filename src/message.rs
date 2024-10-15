@@ -35,41 +35,14 @@ pub enum MessageTypeData {
     #[serde(rename = "echo_ok")]
     EchoOk {
         echo: String
-    }
+    },
+
+    #[serde(rename = "generate")]
+    Generate {},
+
+    #[serde(rename = "generate_ok")]
+    GenerateOk {
+        id: String,
+    },
 }
 
-// #[derive(Serialize, Deserialize, Debug, Clone)]
-// #[serde(tag = "type")]
-// pub enum MessageBody {
-//     #[serde(rename = "init")]
-//     Init {
-//         node_id: Option<String>,
-//
-//         #[serde(flatten)]
-//         meta: Option<MessageMeta>,
-//     },
-//
-//     #[serde(rename = "init_ok")]
-//     InitOk {
-//         #[serde(flatten)]
-//         meta: Option<MessageMeta>,
-//     },
-//     #[serde(rename = "echo")]
-//     Echo {
-//         echo: String,
-//
-//         #[serde(flatten)]
-//         meta: Option<MessageMeta>,
-//     },
-//
-//     #[serde(rename = "echo_ok")]
-//     EchoOk {
-//         echo: String,
-//
-//         #[serde(flatten)]
-//         meta: Option<MessageMeta>,
-//     },
-// }
-//
-// #[derive(Serialize, Deserialize, Debug, Clone)]
-// pub struct MessageMeta {}
