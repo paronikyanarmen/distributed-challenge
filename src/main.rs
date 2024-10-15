@@ -1,7 +1,7 @@
-use echo_challenge::message::{Message, MessageBody};
+use echo_challenge::handlers::{handle_echo, handle_init};
+use echo_challenge::message::{Message, MessageTypeData};
 use echo_challenge::node::Node;
 use std::io;
-use echo_challenge::handlers::{handle_echo, handle_init};
 
 fn main() -> io::Result<()> {
     let deserializer = serde_json::Deserializer::from_reader(io::stdin());
@@ -13,9 +13,9 @@ fn main() -> io::Result<()> {
     for message in de_iter {
         let message = message?;
 
-        let res = match message.body {
-            MessageBody::Init { .. } => handle_init(&message, &mut node),
-            MessageBody::Echo { .. } => handle_echo(&message, &mut node),
+        let res = match message.body.type_specific {
+            MessageTypeData::Init { .. } => handle_init(&message, &mut node),
+            MessageTypeData::Echo { .. } => handle_echo(&message, &mut node),
             _ => message
         };
 

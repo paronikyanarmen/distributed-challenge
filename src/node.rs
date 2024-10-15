@@ -1,4 +1,4 @@
-use crate::message::{Message, MessageBody};
+use crate::message::Message;
 
 pub struct Node {
     pub id: Option<String>,
@@ -6,12 +6,18 @@ pub struct Node {
 }
 
 impl Node {
-    pub fn reply_to(&mut self, message: &Message, message_body: MessageBody) -> Message {
+    pub fn reply_to(&mut self, message: &Message) -> Message {
+
+        let mut body = message.body.clone();
+
+        body.in_reply_to = body.msg_id;
+
+        body.msg_id = Some(self.message_id as u64);
 
         let mut res = Message {
             src: self.id.clone().unwrap(),
             dest: message.src.clone(),
-            body: message_body,
+            body: message.body.clone(),
         };
 
         self.message_id += 1;
