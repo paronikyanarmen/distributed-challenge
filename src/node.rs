@@ -3,13 +3,20 @@ use crate::message::Message;
 pub struct Node {
     pub id: Option<String>,
     pub message_id: usize,
+    pub messages: Vec<u64>,
 }
 
 impl Node {
+    pub fn new() -> Node {
+        Self {
+            id: None,
+            message_id: 1,
+            messages: Vec::new(),
+        }
+    }
+
     pub fn reply_to(&mut self, message: &Message) -> Message {
         let mut body = message.body.clone();
-
-        // println!("{:?}", message);
 
         body.in_reply_to = body.msg_id;
 

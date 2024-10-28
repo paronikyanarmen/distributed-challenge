@@ -44,5 +44,26 @@ pub enum MessageTypeData {
     GenerateOk {
         id: String,
     },
+
+    #[serde(rename = "broadcast")]
+    Broadcast {
+        message: u64
+    },
+
+    #[serde(rename = "broadcast_ok")]
+    BroadcastOk {},
+
+    #[serde(rename = "read")]
+    Read {},
+
+    #[serde(rename = "read_ok")]
+    ReadOk {
+        messages: Vec<u64>,
+    },
+
+    #[serde(rename = "topology")]
+    Topology {
+        
+    }
 }
 

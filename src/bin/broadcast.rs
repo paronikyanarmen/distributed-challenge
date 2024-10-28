@@ -1,4 +1,4 @@
-use echo_challenge::handlers::{handle_generate, handle_init};
+use echo_challenge::handlers::{handle_broadcast, handle_init, handle_read};
 use echo_challenge::message::{Message, MessageTypeData};
 use echo_challenge::node::Node;
 use std::io;
@@ -14,7 +14,8 @@ fn main() -> io::Result<()> {
 
         let res = match message.body.type_specific {
             MessageTypeData::Init { .. } => handle_init(&message, &mut node),
-            MessageTypeData::Generate { .. } => handle_generate(&message, &mut node),
+            MessageTypeData::Broadcast { .. } => handle_broadcast(&message, &mut node),
+            MessageTypeData::Read {} => handle_read(&message, &mut node),
             _ => message
         };
 
