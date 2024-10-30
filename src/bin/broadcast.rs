@@ -1,4 +1,4 @@
-use echo_challenge::handlers::{handle_broadcast, handle_init, handle_read};
+use echo_challenge::handlers::{handle_broadcast, handle_init, handle_read, handle_topology};
 use echo_challenge::message::{Message, MessageTypeData};
 use echo_challenge::node::Node;
 use std::io;
@@ -16,6 +16,7 @@ fn main() -> io::Result<()> {
             MessageTypeData::Init { .. } => handle_init(&message, &mut node),
             MessageTypeData::Broadcast { .. } => handle_broadcast(&message, &mut node),
             MessageTypeData::Read {} => handle_read(&message, &mut node),
+            MessageTypeData::Topology { .. } => handle_topology(&message, &mut node),
             _ => message
         };
 

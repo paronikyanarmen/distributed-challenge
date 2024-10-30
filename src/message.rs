@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Message {
@@ -63,7 +64,11 @@ pub enum MessageTypeData {
 
     #[serde(rename = "topology")]
     Topology {
-        
-    }
+        #[serde(flatten)]
+        data: Value
+    },
+
+    #[serde(rename = "topology_ok")]
+    TopologyOk {},
 }
 
