@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -59,7 +60,7 @@ pub enum MessageTypeData {
 
     #[serde(rename = "read_ok")]
     ReadOk {
-        messages: Vec<u64>,
+        messages: HashSet<u64>,
     },
 
     #[serde(rename = "topology")]

@@ -1,9 +1,10 @@
+use std::collections::HashSet;
 use crate::message::Message;
 
 pub struct Node {
     pub id: Option<String>,
     pub message_id: usize,
-    pub messages: Vec<u64>,
+    pub messages: HashSet<u64>,
 }
 
 impl Node {
@@ -11,7 +12,7 @@ impl Node {
         Self {
             id: None,
             message_id: 1,
-            messages: Vec::new(),
+            messages: HashSet::new(),
         }
     }
 
