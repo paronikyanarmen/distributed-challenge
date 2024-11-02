@@ -17,6 +17,7 @@ fn main() -> io::Result<()> {
             MessageTypeData::Broadcast { .. } => handle_broadcast(&message, &mut node),
             MessageTypeData::Read {} => handle_read(&message, &mut node),
             MessageTypeData::Topology { .. } => handle_topology(&message, &mut node),
+            MessageTypeData::Gossip { .. } => handle_gossip(&message, &mut node),
             _ => message
         };
 

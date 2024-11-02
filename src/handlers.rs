@@ -5,6 +5,7 @@ mod generate;
 mod broadcast;
 mod read;
 mod topology;
+mod gossip;
 
 pub use echo::handle_echo;
 pub use generate::handle_generate;
