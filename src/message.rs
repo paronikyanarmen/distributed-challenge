@@ -1,6 +1,6 @@
-use std::collections::HashSet;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use std::collections::HashSet;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Message {
@@ -71,5 +71,14 @@ pub enum MessageTypeData {
 
     #[serde(rename = "topology_ok")]
     TopologyOk {},
+
+    #[serde(rename = "gossip")]
+    Gossip {
+        message: u64,
+        already_spread: Vec<String>,
+    },
+
+    #[serde(rename = "gossip_ok")]
+    GossipOk {},
 }
 

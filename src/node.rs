@@ -1,9 +1,9 @@
 use std::collections::HashSet;
-use crate::message::Message;
+use crate::message::{Message, MessageBody, MessageTypeData};
 
 pub struct Node {
     pub id: Option<String>,
-    pub message_id: usize,
+    message_id: usize,
     pub messages: HashSet<u64>,
     pub neighbors: Vec<String>
 }
@@ -34,5 +34,28 @@ impl Node {
         self.message_id += 1;
 
         res
+    }
+
+    pub fn new_message(&mut self, dest: String) -> Message {
+        let body = MessageBody {
+            msg_id: Some(self.message_id as u64),
+            in_reply_to: None,
+            type_specific: MessageTypeData::InitOk {},
+        };
+
+
+        let res = Message {
+            src: self.id.clone().unwrap(),
+            dest,
+            body,
+        };
+
+        self.message_id += 1;
+
+        res
+    }
+
+    pub fn get_message_id(&self) -> usize {
+        self.message_id
     }
 }

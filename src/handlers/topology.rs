@@ -8,6 +8,8 @@ pub fn handle_topology(req_message: &Message, node: &mut Node) -> Message {
         let node_id = node.id.as_ref().unwrap();
 
         for other_id in data["topology"][node_id].as_array().unwrap() {
+            let other_id = other_id.to_string();
+            let other_id = &other_id[1..other_id.len() - 1];
             node.neighbors.push(other_id.to_string());
         }
 
