@@ -5,7 +5,7 @@ pub struct Node {
     pub id: Option<String>,
     message_id: usize,
     pub messages: HashSet<u64>,
-    pub neighbors: Vec<String>
+    pub neighbors: HashSet<String>
 }
 
 impl Node {
@@ -14,7 +14,7 @@ impl Node {
             id: None,
             message_id: 1,
             messages: HashSet::new(),
-            neighbors: Vec::new()
+            neighbors: HashSet::new()
         }
     }
 

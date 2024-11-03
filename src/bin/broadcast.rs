@@ -1,4 +1,4 @@
-use echo_challenge::handlers::{handle_broadcast, handle_init, handle_read, handle_topology};
+use echo_challenge::handlers::{handle_broadcast, handle_gossip, handle_init, handle_read, handle_topology};
 use echo_challenge::message::{Message, MessageTypeData};
 use echo_challenge::node::Node;
 use std::io;

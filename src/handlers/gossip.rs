@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use crate::message::{Message, MessageTypeData};
 use crate::node::Node;
 
@@ -7,11 +8,17 @@ pub fn handle_gossip(req_message: &Message, node: &mut Node) -> Message {
 
         node.messages.insert(*message);
 
-        for dest in node.neighbors.clone() {
+        let neighbors = node.neighbors.clone();
+
+        let diff = neighbors.difference(&already_spread);
+
+        let new_already_sent = neighbors.union(&already_spread).collect::<HashSet<_>>().iter().map(|item| item.to_owned().clone()).collect::<HashSet<_>>();
+
+        for dest in diff {
             let mut gossip = node.new_message(dest.clone());
             gossip.body.type_specific = MessageTypeData::Gossip {
                 message: *message,
-                already_spread: node.neighbors.clone(),
+                already_spread: new_already_sent.clone(),
             };
 
             println!("{}", serde_json::to_string(&gossip).unwrap());

@@ -75,7 +75,7 @@ pub enum MessageTypeData {
     #[serde(rename = "gossip")]
     Gossip {
         message: u64,
-        already_spread: Vec<String>,
+        already_spread: HashSet<String>,
     },
 
     #[serde(rename = "gossip_ok")]
