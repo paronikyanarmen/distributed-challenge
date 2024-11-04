@@ -12,7 +12,9 @@ pub fn handle_gossip(req_message: &Message, node: &mut Node) -> Message {
 
         let diff = neighbors.difference(&already_spread);
 
-        let new_already_sent = neighbors.union(&already_spread).collect::<HashSet<_>>().iter().map(|item| item.to_owned().clone()).collect::<HashSet<_>>();
+        let new_already_sent: HashSet<&String> = neighbors.union(&already_spread).collect();
+
+        let new_already_sent: HashSet<String> = new_already_sent.iter().map(|item| item.to_owned().clone()).collect();
 
         for dest in diff {
             let mut gossip = node.new_message(dest.clone());
