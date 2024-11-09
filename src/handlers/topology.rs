@@ -1,8 +1,11 @@
+use std::sync::{Arc, Mutex};
 use crate::message::{Message, MessageTypeData};
 use crate::node::Node;
 
-pub fn handle_topology(req_message: &Message, node: &mut Node) -> Message {
+pub fn handle_topology(req_message: &Message, node: Arc<Mutex<Node>>) -> Message {
     if let MessageTypeData::Topology { data } = &req_message.body.type_specific {
+        let mut node = node.lock().unwrap();
+
         let mut res = node.reply_to(&req_message);
 
         let node_id = node.id.as_ref().unwrap();
@@ -18,5 +21,5 @@ pub fn handle_topology(req_message: &Message, node: &mut Node) -> Message {
         return res;
     }
 
-    panic!("Wrong message type");
+    unreachable!();
 }
