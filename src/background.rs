@@ -7,13 +7,15 @@ use std::time::Duration;
 pub fn check_neighbors(node: Arc<Mutex<Node>>) {
     let mut node = node.lock().unwrap();
 
-    let neighbors = node.neighbors.clone();
+    loop {
+        let neighbors = node.neighbors.clone();
 
-    for neighbor in neighbors {
-        let mut message = node.new_message(neighbor);
-        message.body.type_specific = MessageTypeData::Read {};
-        println!("{}", serde_json::to_string(&message).unwrap());
+        for neighbor in neighbors {
+            let mut message = node.new_message(neighbor);
+            message.body.type_specific = MessageTypeData::Read {};
+            println!("{}", serde_json::to_string(&message).unwrap());
+        }
+
+        thread::sleep(Duration::from_millis(500));
     }
-
-    thread::sleep(Duration::from_millis(500));
 }

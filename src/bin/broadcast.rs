@@ -3,6 +3,7 @@ use echo_challenge::message::{Message, MessageTypeData};
 use echo_challenge::node::Node;
 use std::{io, thread};
 use std::sync::{Arc, Mutex};
+use std::time::Duration;
 use echo_challenge::background::check_neighbors;
 
 fn main() -> io::Result<()> {
@@ -13,9 +14,7 @@ fn main() -> io::Result<()> {
 
     let node_copy  = Arc::clone(&node);
 
-    thread::spawn(move || {
-        check_neighbors(node_copy);
-    });
+
 
     for message in de_iter {
         let message = message?;
@@ -26,10 +25,16 @@ fn main() -> io::Result<()> {
             MessageTypeData::Read {} => handle_read(&message, Arc::clone(&node)),
             MessageTypeData::Topology { .. } => handle_topology(&message, Arc::clone(&node)),
             MessageTypeData::Gossip { .. } => handle_gossip(&message, Arc::clone(&node)),
-            _ => message
+            _ => continue
         };
 
         println!("{}", serde_json::to_string(&res)?);
+        thread::sleep(Duration::from_micros(1));
     }
+
+    thread::spawn(move || {
+        check_neighbors(node_copy);
+    });
+
     Ok(())
 }

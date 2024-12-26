@@ -17,7 +17,9 @@ pub fn handle_gossip(req_message: &Message, node: Arc<Mutex<Node>>) -> Message {
 
         let new_already_sent: HashSet<&String> = neighbors.union(&already_spread).collect();
 
-        let new_already_sent: HashSet<String> = new_already_sent.iter().map(|item| item.to_owned().clone()).collect();
+        let mut  new_already_sent: HashSet<String> = new_already_sent.iter().map(|item| item.to_owned().clone()).collect();
+
+        new_already_sent.insert(node.id.clone().unwrap());
 
         for dest in diff {
             let mut gossip = node.new_message(dest.clone());
