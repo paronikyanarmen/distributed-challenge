@@ -8,7 +8,7 @@ pub fn handle_topology(req_message: &Message, node: Arc<Mutex<Node>>) -> Message
 
         let mut res = node.reply_to(&req_message);
 
-        let node_id = node.id.as_ref().unwrap();
+        let node_id = node.id.clone();
 
         for other_id in data["topology"][node_id].as_array().unwrap() {
             let other_id = other_id.to_string();

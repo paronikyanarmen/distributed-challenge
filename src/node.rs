@@ -2,20 +2,24 @@ use crate::message::{Message, MessageBody, MessageTypeData};
 use std::collections::HashSet;
 
 pub struct Node {
-    pub id: Option<String>,
+    pub id: String,
     message_id: usize,
     pub messages: HashSet<u64>,
     pub neighbors: HashSet<String>,
 }
 
 impl Node {
-    pub fn new() -> Node {
-        Self {
-            id: None,
-            message_id: 1,
-            messages: HashSet::new(),
-            neighbors: HashSet::new(),
+
+    pub fn from(message: &Message) -> Node {
+        if let MessageTypeData::Init { node_id } = &message.body.type_specific {
+           return Node {
+               id: node_id.clone(),
+               message_id: 0,
+               messages: HashSet::new(),
+               neighbors: HashSet::new(),
+           }
         }
+        unreachable!();
     }
 
     pub fn reply_to(&mut self, message: &Message) -> Message {
@@ -26,7 +30,7 @@ impl Node {
         body.msg_id = Some(self.message_id as u64);
 
         let res = Message {
-            src: self.id.clone().unwrap(),
+            src: self.id.clone(),
             dest: message.src.clone(),
             body,
         };
@@ -43,9 +47,8 @@ impl Node {
             type_specific: MessageTypeData::InitOk {},
         };
 
-
         let res = Message {
-            src: self.id.clone().unwrap(),
+            src: self.id.clone(),
             dest,
             body,
         };

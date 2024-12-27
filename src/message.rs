@@ -23,7 +23,7 @@ pub struct MessageBody {
 pub enum MessageTypeData {
     #[serde(rename = "init")]
     Init {
-        node_id: Option<String>,
+        node_id: String,
     },
 
     #[serde(rename = "init_ok")]

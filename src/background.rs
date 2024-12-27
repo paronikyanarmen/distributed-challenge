@@ -10,12 +10,14 @@ pub fn check_neighbors(node: Arc<Mutex<Node>>) {
     loop {
         let neighbors = node.neighbors.clone();
 
+        eprintln!("{:?}", neighbors);
+
         for neighbor in neighbors {
             let mut message = node.new_message(neighbor);
             message.body.type_specific = MessageTypeData::Read {};
             println!("{}", serde_json::to_string(&message).unwrap());
         }
 
-        thread::sleep(Duration::from_millis(500));
+        thread::sleep(Duration::from_millis(5));
     }
 }

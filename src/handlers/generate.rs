@@ -5,7 +5,7 @@ pub fn handle_generate(message: &Message, node: &mut Node) -> Message {
     if let MessageTypeData::Generate {} = &message.body.type_specific {
         let mut res = node.reply_to(&message);
 
-        let mut id = node.id.clone().unwrap();
+        let mut id = node.id.clone();
 
         id.push_str(node.get_message_id().to_string().as_str());
 
