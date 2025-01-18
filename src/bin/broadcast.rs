@@ -1,4 +1,4 @@
-use echo_challenge::handlers::{handle_broadcast, handle_gossip, handle_init, handle_read, handle_topology};
+use echo_challenge::handlers::{handle_broadcast, handle_gossip, handle_init, handle_read, handle_read_ok, handle_topology};
 use echo_challenge::message::{Message, MessageTypeData};
 use echo_challenge::node::Node;
 use std::{io, thread};
@@ -29,15 +29,22 @@ fn main() -> io::Result<()> {
     for message in de_iter {
         let message = message?;
 
-        let res = match message.body.type_specific {
-            MessageTypeData::Broadcast { .. } => handle_broadcast(&message, Arc::clone(&node)),
-            MessageTypeData::Read {} => handle_read(&message, Arc::clone(&node)),
-            MessageTypeData::Topology { .. } => handle_topology(&message, Arc::clone(&node)),
-            MessageTypeData::Gossip { .. } => handle_gossip(&message, Arc::clone(&node)),
+        let res: Option<Message> = match message.body.type_specific {
+            MessageTypeData::Broadcast { .. } => Some(handle_broadcast(&message, Arc::clone(&node))),
+            MessageTypeData::Read {} => Some(handle_read(&message, Arc::clone(&node))),
+            MessageTypeData::Topology { .. } => Some(handle_topology(&message, Arc::clone(&node))),
+            MessageTypeData::Gossip { .. } => Some(handle_gossip(&message, Arc::clone(&node))),
+            MessageTypeData::ReadOk { .. } => {
+                handle_read_ok(&message, Arc::clone(&node));
+                None
+            },
             _ => continue
         };
 
-        println!("{}", serde_json::to_string(&res)?);
+        if let Some(res) = res {
+            println!("{}", serde_json::to_string(&res)?);
+        }
+
         thread::sleep(Duration::from_micros(1));
     }
 
